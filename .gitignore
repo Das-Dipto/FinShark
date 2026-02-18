@@ -1,0 +1,50 @@
+# ========================================
+# FRONTEND (React / Node)
+# ========================================
+
+# dependencies
+frontend/node_modules/
+
+# production builds
+frontend/build/
+frontend/dist/
+
+# testing
+frontend/coverage/
+
+# environment files
+frontend/.env
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+
+# logs
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+
+# ========================================
+# BACKEND (.NET)
+# ========================================
+
+api/bin/
+api/obj/
+api/.vs/
+api/*.user
+api/*.suo
+
+# Rider / VS Code
+.vscode/
+.idea/
+
+# ========================================
+# GLOBAL
+# ========================================
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
