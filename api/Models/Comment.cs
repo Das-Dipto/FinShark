@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace api.Models
 {
+    // ISSUE might exist into this file
     public class Comment
     {
         public int Id {get; set;}
