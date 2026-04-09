@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
 using api.Dtos.Stock;
+using api.Dtos.Comment;
 using api.Interfaces;
 using api.Models;
 using Microsoft.EntityFrameworkCore;
@@ -67,6 +68,16 @@ namespace api.Repository
             await _context.SaveChangesAsync();
 
             return existingStock;
+        }
+
+        public static Comment ToCommentFromCreate(this CreateCommentDto commentDto, int stockId)
+        {
+            return new Comment
+            {
+                Title = commentDto.Title,
+                Content = commentDto.Content,
+                StockId = stockId
+            };
         }
     }
 }
