@@ -25,5 +25,7 @@ namespace api.Repository
         {
             return await _context.Comments.FindAsync(id);
         }
+
+        Task<Comment> CreateAsync(Comment commentModel);
     }
 }
