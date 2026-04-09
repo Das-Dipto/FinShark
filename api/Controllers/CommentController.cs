@@ -14,11 +14,11 @@ namespace api.Controllers
     public class CommentController : ControllerBase
     {
         private readonly ICommentRepository _commentRepo;
-         private readonly IStockRepository _stockRepo;
+        
+        private readonly IStockRepository _stockRepo;
         public CommentController(ICommentRepository commentRepo, IStockRepository stockRepo)
         {
             _commentRepo = commentRepo;
-            _stockRepo = stockRepo;
         }
 
         [HttpGet]

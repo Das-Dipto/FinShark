@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
 using api.Dtos.Stock;
-using api.Dtos.Comment;
 using api.Interfaces;
 using api.Models;
 using Microsoft.EntityFrameworkCore;
@@ -49,6 +48,12 @@ namespace api.Repository
             return await _context.Stock.Include(c => c.Comments).FirstOrDefaultAsync(i => i.Id == id);
         }
 
+
+         public Task<bool> StockExists(int id)
+        {
+            return _context.Stock.AnyAsync(s => s.Id == id);
+        }
+
         public async Task<Stock?> UpdateAsync(int id, UpdateStockRequestDto stockDto)
         {
             var existingStock = await _context.Stock.FirstOrDefaultAsync(x => x.Id == id);
@@ -68,16 +73,6 @@ namespace api.Repository
             await _context.SaveChangesAsync();
 
             return existingStock;
-        }
-
-        public static Comment ToCommentFromCreate(this CreateCommentDto commentDto, int stockId)
-        {
-            return new Comment
-            {
-                Title = commentDto.Title,
-                Content = commentDto.Content,
-                StockId = stockId
-            };
         }
     }
 }
