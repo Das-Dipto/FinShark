@@ -44,6 +44,7 @@ namespace api.Controllers
             return Ok(comment.ToCommentDto());
         }
 
+        // Issue exist here somewhere
         [HttpPost("{stockId}")]
         public async Task<IActionResult> Create([FromRoute] int stockId, CreateCommentDto commentDto)
         {
