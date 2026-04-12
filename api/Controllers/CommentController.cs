@@ -19,6 +19,7 @@ namespace api.Controllers
         public CommentController(ICommentRepository commentRepo, IStockRepository stockRepo)
         {
             _commentRepo = commentRepo;
+            _stockRepo = stockRepo; // ✅ FIX
         }
 
         [HttpGet]
@@ -44,7 +45,7 @@ namespace api.Controllers
             return Ok(comment.ToCommentDto());
         }
 
-        // Issue exist here somewhere
+       
        
         [HttpPost("{stockId}")]
         public async Task<IActionResult> Create([FromRoute] int stockId, CreateCommentDto commentDto)
@@ -56,7 +57,8 @@ namespace api.Controllers
 
             var commentModel = commentDto.ToCommentFromCreate(stockId);
             await _commentRepo.CreateAsync(commentModel);
-            return CreatedAtAction(nameof(GetById), new { id = commentModel }, commentModel.ToCommentDto());
+
+            return CreatedAtAction(nameof(GetById), new { id = commentModel.Id }, commentModel.ToCommentDto());
         }
     }
 }
