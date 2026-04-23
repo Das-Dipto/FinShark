@@ -28,15 +28,18 @@ namespace api.Data
             {
                 new IdentityRole
                 {
+                    Id = "admin-role-id", // ✅ static ID (important)
                     Name = "Admin",
                     NormalizedName = "ADMIN"
                 },
                 new IdentityRole
                 {
+                    Id = "user-role-id", // ✅ static ID (important)
                     Name = "User",
                     NormalizedName = "USER"
                 },
             };
+
             builder.Entity<IdentityRole>().HasData(roles);
         }
     }
