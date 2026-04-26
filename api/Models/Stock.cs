@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace api.Models
 {
+
+    
     
     [Table("Stocks")]
     public class Stock
