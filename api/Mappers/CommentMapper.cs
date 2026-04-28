@@ -37,7 +37,6 @@ namespace api.Mappers
             {
                 Title = commentDto.Title,
                 Content = commentDto.Content,
-                CreatedBy = commentModel.AppUser.UserName,
                 StockId = stockId
             };
         }
