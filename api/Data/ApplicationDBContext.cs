@@ -16,7 +16,6 @@ namespace api.Data
         {
         }
 
-        // Your tables
         public DbSet<Stock> Stocks { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Portfolio> Portfolios { get; set; }
@@ -25,29 +24,38 @@ namespace api.Data
         {
             base.OnModelCreating(builder);
 
+            // Portfolio (existing)
             builder.Entity<Portfolio>(x => x.HasKey(p => new { p.AppUserId, p.StockId }));
 
             builder.Entity<Portfolio>()
-                .HasOne(u => u.AppUser)
+                .HasOne(p => p.AppUser)
                 .WithMany(u => u.Portfolios)
                 .HasForeignKey(p => p.AppUserId);
 
             builder.Entity<Portfolio>()
-                .HasOne(u => u.Stock)
-                .WithMany(u => u.Portfolios)
+                .HasOne(p => p.Stock)
+                .WithMany(s => s.Portfolios)
                 .HasForeignKey(p => p.StockId);
 
+            // ✅ ADD THIS: User → Comments (one-to-many)
+            builder.Entity<Comment>()
+                .HasOne(c => c.AppUser)
+                .WithMany(u => u.Comments)
+                .HasForeignKey(c => c.AppUserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Roles seeding (existing)
             List<IdentityRole> roles = new List<IdentityRole>
             {
                 new IdentityRole
                 {
-                    Id = "admin-role-id", // ✅ static ID (important)
+                    Id = "admin-role-id",
                     Name = "Admin",
                     NormalizedName = "ADMIN"
                 },
                 new IdentityRole
                 {
-                    Id = "user-role-id", // ✅ static ID (important)
+                    Id = "user-role-id",
                     Name = "User",
                     NormalizedName = "USER"
                 },
