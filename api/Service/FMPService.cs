@@ -1,47 +1,38 @@
-using System;
+using System.Net.Http;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using api.Dtos.Stock;
 using api.Interfaces;
-using api.Mappers;
 using api.Models;
 using Newtonsoft.Json;
 
-namespace api.Service
+namespace api.Services
 {
     public class FMPService : IFMPService
     {
-        private HttpClient _httpClient;
-        private IConfiguration _config;
-        public FMPService(HttpClient httpClient, IConfiguration config)
+        private readonly HttpClient _httpClient;
+
+        public FMPService(HttpClient httpClient)
         {
             _httpClient = httpClient;
-            _config = config;
         }
-        public async Task<Stock> FindStockBySymbolAsync(string symbol)
+
+        public async Task<Stock?> FindStockBySymbolAsync(string symbol)
         {
-            try
+            var url = $"https://financialmodelingprep.com/api/v3/profile/{symbol}?apikey=YOUR_API_KEY";
+
+            var response = await _httpClient.GetAsync(url);
+
+            if (!response.IsSuccessStatusCode)
             {
-                var result = await _httpClient.GetAsync($"https://financialmodelingprep.com/api/v3/profile/{symbol}?apikey={_config["FMPKey"]}");
-                if (result.IsSuccessStatusCode)
-                {
-                    var content = await result.Content.ReadAsStringAsync();
-                    var tasks = JsonConvert.DeserializeObject<FMPStock[]>(content);
-                    var stock = tasks[0];
-                    if (stock != null)
-                    {
-                        return stock.ToStockFromFMP();
-                    }
-                    return null;
-                }
                 return null;
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return null;
-            }
+
+            var content = await response.Content.ReadAsStringAsync();
+
+            var stocks = JsonConvert.DeserializeObject<List<Stock>>(content);
+
+            return stocks?.FirstOrDefault();
         }
     }
 }
